@@ -8,7 +8,7 @@
     security_group: my_securitygroup
     image: my_ami_id
     wait: yes
-    region: Singapore
+    region: us-east-1
     count: 3
     vpc_subnet_id: vpc-05467343e7f4b257a
     assign_public_ip: yes
