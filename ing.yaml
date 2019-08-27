@@ -6,7 +6,7 @@
     keypair: sutv
     instance_type: t2.micro
     security_group: default
-    image: my_ami_id
+    image: ami-19f28d4b
     wait: yes
     region: us-east-1
     count: 3
