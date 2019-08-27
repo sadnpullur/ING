@@ -25,5 +25,4 @@
          wait: true
          region: "{{ region }}"
          vpc_subnet_id: subnet-03d05ee97190c50f5
-         assign_public_ip: yes
       register: ec2
