@@ -1,15 +1,40 @@
 ---
-- hosts: localhost
-  connection: local
-  gather_facts: false
-  user: root
+- name: Create a test instance
+  hosts: localhost
+  gather_facts: False
+  vars:
+    keypair: my_keypair
+    instance_type: t2.micro
+    security_group: my_securitygroup
+    image: my_ami_id
+    wait: yes
+    region: us-east-1
+    count: 3
+    vpc_subnet_id: vpc-05467343e7f4b257a
+    assign_public_ip: yes
   tasks:
-    - name: provisoing a new hosts 
+    - name: Launch instance
       ec2:
-        key_name: mykey
-        instance_type: t2.micro
-        image: ami-123456
-        wait: yes
-        group: webserver
-        count: 3
-        vpc_subnet_id: subnet-29e632
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: true
+         region: "{{ region }}"
+         vpc_subnet_id: subnet-29e63245
+         assign_public_ip: yes
+      register: ec2
+
+
+    - name: Add new instance to host group
+      add_host:
+        hostname: "{{ item.public_ip }}"
+        groupname: launched
+      loop: "{{ ec2.instances }}"
+
+    - name: Wait for SSH to come up
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        delay: 60
+        timeout: 320
+      loop: "{{ ec2.instances }}"
