@@ -2,9 +2,9 @@
 - name: Create a test instance
   hosts: localhost
   gather_facts: False
-  vars_prompt:
-    - name: "number"
-      prompt: "How many nodes you want to install?"
+#  vars_prompt:
+#    - name: "number"
+#      prompt: "How many nodes you want to install?"
   vars:
     keypair: sutv
     instance_type: t2.micro
