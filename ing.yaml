@@ -3,15 +3,15 @@
   hosts: localhost
   gather_facts: False
   vars:
-    keypair: my_keypair
+    keypair: sutv
     instance_type: t2.micro
-    security_group: my_securitygroup
+    security_group: default
     image: my_ami_id
     wait: yes
     region: us-east-1
     count: 3
     vpc_subnet_id: vpc-05467343e7f4b257a
-    assign_public_ip: yes
+    assign_public_ip: no
   tasks:
     - name: Launch instance
       ec2:
@@ -21,20 +21,6 @@
          image: "{{ image }}"
          wait: true
          region: "{{ region }}"
-         vpc_subnet_id: subnet-29e63245
+         vpc_subnet_id: subnet-03d05ee97190c50f5
          assign_public_ip: yes
       register: ec2
-
-
-    - name: Add new instance to host group
-      add_host:
-        hostname: "{{ item.public_ip }}"
-        groupname: launched
-      loop: "{{ ec2.instances }}"
-
-    - name: Wait for SSH to come up
-      delegate_to: "{{ item.public_dns_name }}"
-      wait_for_connection:
-        delay: 60
-        timeout: 320
-      loop: "{{ ec2.instances }}"
