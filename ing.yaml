@@ -12,7 +12,7 @@
     image: ami-19f28d4b
     wait: yes
     region: us-east-1
-    count: "{{number}}"
+    count: 3 
     vpc_subnet_id: vpc-05467343e7f4b257a
     assign_public_ip: no
   tasks:
